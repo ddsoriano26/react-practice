@@ -30,7 +30,8 @@ function Home() {
         {/* <button>
           Todo List Application
         </button> */}
-        <Link to='/todo-list'><button>Todo List Component</button></Link>
+        <Link to='/todo-list'><button>To-Do List</button></Link>
+        <Link to='/weather-dashboard'><button>Weather Dashboard</button></Link>
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
