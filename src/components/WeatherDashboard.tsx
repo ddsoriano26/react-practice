@@ -10,9 +10,8 @@ Components:
 - Forecast display (3-5 days)
     - Each day shows: date, min/max temperature, weather icon/condition
 Other things to implement:
-- Error handling, e.g. city not found or nextwork errors
-- Loading spinner thing
 Future stuff:
+- Loading spinner thing
 - "Real-time" updating of city as user types, or autocomplete or suggestions
 */
 import { useEffect, useState } from "react"
@@ -29,18 +28,22 @@ function WeatherDashboard() {
 
     const clickSearchBtn = async () => {
         if (city.length > 0) {
-            const response = await fetch(
-                `${apiCall}?q=${city}&days=${days}&key=${key}`
-            )
-            response.json()
-                .then((data: City) => {
-                    setCityResults(data)
-                    setCity('')
-                })
-                .catch((err) => {
-                    console.error(err)
-                    alert(`An error occured: ${err}`)
-                })
+            try {
+                const response = await fetch(
+                    `${apiCall}?q=${city}&days=${days}&key=${key}`
+                )
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status} ${response.statusText}`)
+                }
+
+                const data: City = await response.json()
+                setCityResults(data)
+                setCity('')
+            } catch (err) {
+                console.error(err)
+                alert(`Error searching for city! Check console for more details.`)
+            }
         } else {
             alert("Please input a city.")
         }
@@ -49,18 +52,22 @@ function WeatherDashboard() {
     useEffect(() => {
         // Use "Manila" as the default city
         async function getDefaultCity() {
-            const response = await fetch(
-                `${apiCall}?days=${days}&q=Manila&key=${key}`
-            )
-            response.json()
-                .then((data: City) => {
-                    setCityResults(data)
-                })
-                .catch((err) => {
-                    console.error(err)
-                    alert("An error occurred with Weather API. Please try refreshing the page.")
-                    setCityResults(null)
-                })
+            try {
+                const response = await fetch(
+                    `${apiCall}?days=${days}&q=Manila&key=${key}`
+                )
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status} ${response.statusText}`)
+                }
+
+                const data: City = await response.json()
+                setCityResults(data)
+            } catch (err) {
+                console.error(err)
+                alert("An error occurred with Weather API. Please try refreshing the page.")
+                setCityResults(null)
+            }
         }
         getDefaultCity()
     }, [])
