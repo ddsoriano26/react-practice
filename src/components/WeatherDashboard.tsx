@@ -23,11 +23,12 @@ function WeatherDashboard() {
     const [city, setCity] = useState('')
     const key = 'f33b267dfb8e421f902181058251510'
     const [cityResults, setCityResults] = useState<City | null>(null)
+    const apiCall = "https://api.weatherapi.com/v1/forecast.json"
 
     const clickSearchBtn = async () => {
         if (city.length > 0) {
             const response = await fetch(
-                `https://api.weatherapi.com/v1/current.json?q=${city}&key=${key}`
+                `${apiCall}?q=${city}&days=3&key=${key}`
             )
             response.json()
                 .then((data: City) => {
@@ -47,7 +48,7 @@ function WeatherDashboard() {
         // Use "Manila" as the default city
         async function getDefaultCity() {
             const response = await fetch(
-                `https://api.weatherapi.com/v1/current.json?q=Manila&key=${key}`
+                `${apiCall}?days=3&q=Manila&key=${key}`
             )
             response.json()
                 .then((data: City) => {

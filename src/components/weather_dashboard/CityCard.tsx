@@ -40,7 +40,7 @@ function CityCard({ city }: { city: City | null }) {
                             {`Wind: ${city.current.wind_kph} kph`}
                         </div>
                         <div className="rounded-xl py-1 px-2 bg-emerald-100/50 text-sm">
-                            {`Feels Like: ${city.current.feelslike_c}`}
+                            {`Feels Like: ${city.current.feelslike_c}°C`}
                         </div>
                     </div>
                 </div>
