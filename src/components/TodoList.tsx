@@ -38,9 +38,9 @@ function TodoList() {
 
     return (
         <>
-            <h1>To-Do List</h1>
-            <div style={{ width: '100%' }}>
-                <div className="row">
+            <div className="w-full flex flex-col gap-5">
+                <h1>To-Do List</h1>
+                <div className="flex flex-row gap-3">
                     <input
                         placeholder="Add your to-do list item here..."
                         type="text"
@@ -49,10 +49,10 @@ function TodoList() {
                     />
                     <button onClick={addItem}>Add</button>
                 </div>
-                <ul style={{ width: '100%' }}>
+                <ul className="w-full flex flex-col gap-3">
                     {
                         items.map((item: string) => {
-                            return (<div style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', gap: '10px' }}>
+                            return (<div className="flex justify-between items-center w-full">
                                         <li>{item}</li>
                                         <button onClick={() => {deleteItem(item)}}>Delete</button>
                                     </div>)

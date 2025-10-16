@@ -26,10 +26,7 @@ function Home() {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
       </div>
-      <div className='card'>
-        {/* <button>
-          Todo List Application
-        </button> */}
+      <div className='flex flex-col gap-3'>
         <Link to='/todo-list'><button className='link'>To-Do List</button></Link>
         <Link to='/weather-dashboard'><button className='link'>Weather Dashboard</button></Link>
       </div>
