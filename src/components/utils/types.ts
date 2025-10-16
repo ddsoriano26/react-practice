@@ -29,5 +29,22 @@ export type City = {
     forecast: {
         forecastday: Array<DayForecast>;
     }
-  };
+  }
+
+  export type PhotoResource = {
+    width: number;
+    height: number;
+    photographer: string;
+    src: {
+        original: string;
+        large2x: string;
+        large: string;
+        medium: string;
+        small: string;
+        portrait: string;
+        landscape: string;
+        tiny: string;
+    };
+    alt: string;
+  }
   

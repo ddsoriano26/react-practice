@@ -18,11 +18,12 @@ function Home() {
       <div className='flex flex-col gap-3'>
         <Link to='/todo-list'><button className='link'>To-Do List</button></Link>
         <Link to='/weather-dashboard'><button className='link'>Weather Dashboard</button></Link>
+        <Link to='/image-gallery'><button className='link'>Image Gallery</button></Link>
       </div>
       <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
+        Portfolio to showcase React and web development skills and learnings
       </p>
-    </>
+    </div>
   )
 }
 

@@ -1,0 +1,78 @@
+/*
+Image Gallery
+Components:
+- Image display grid
+- Lazy loading
+- Filter by category (e.g. "Nature", "Architecture", "People")
+    - Dropdown?
+- Image preview modal
+    - Click to show full-sized image
+    - Close button
+    - Navigation to next image
+    - Background dims when modal is open
+- Error handling
+*/
+import React, { lazy, Suspense } from "react"
+import type { City, PhotoResource } from "./utils/types"
+import { useEffect, useState } from "react"
+import LoadingSpinner from "./utils/LoadingSpinner.tsx"
+
+function ImageGallery() {
+    const [photos, setPhotos] = useState<Array<PhotoResource> | null>(null)
+    const apiCall = "https://api.pexels.com/v1/search"
+    const query = "nature"
+    const per_page = 20
+    const page = Math.min(Math.floor(Math.random() * 10), 1)
+    const accessKey = import.meta.env.VITE_PEXELS_ACCESS_KEY
+
+    const LazyPhotoResource = lazy(() => import('./image_gallery/PhotoResource.tsx'))
+
+    useEffect(() => {
+        async function getPhotos() {
+            try {
+                const response = await fetch(
+                    `${apiCall}?query=${query}&per_page=${per_page}&page=${page}`, {
+                        headers: {
+                            'Authorization': `${accessKey}`
+                        }
+                    }
+                )
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status} ${response.statusText}`)
+                }
+
+                const data = await response.json()
+                setPhotos(data.photos)
+                // console.log(data)
+            } catch (err) {
+                console.error(err)
+                alert("An error occurred fetching the images from Pexels. Please try refreshing the page.")
+            }
+        }
+        getPhotos()
+    }, [])
+
+    return (
+        <>
+            <div className="grid w-full grid-cols-4 gap-3">
+                {photos && (
+                    photos.map((photo: PhotoResource) => {
+                        return (<Suspense fallback={<LoadingSpinner />}>
+                            {/* <img
+                                src={photo.src.original}
+                                alt={photo.alt}
+                            /> */}
+                            <LazyPhotoResource
+                                src={photo.src.original}
+                                alt={photo.alt}
+                            />
+                        </Suspense>)
+                    })
+                )}
+            </div>
+        </>
+    )
+}
+
+export default ImageGallery
