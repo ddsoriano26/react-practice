@@ -32,6 +32,7 @@ function WeatherDashboard() {
             response.json()
                 .then((data: City) => {
                     setCityResults(data)
+                    setCity('')
                 })
                 .catch((err) => {
                     console.error(err)

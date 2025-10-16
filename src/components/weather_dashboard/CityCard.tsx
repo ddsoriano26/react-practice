@@ -9,26 +9,28 @@ function CityCard({ city }: { city: City | null }) {
         <>
             {city && (
                 <div className="border-3 rounded-xl p-4 w-auto flex flex-col gap-5">
-                    <div className="grid grid-cols-4 gap-4 p-4">
-                        <div className="w-auto col-span-3 flex flex-col items-start">
+                    <div className="flex flex-col gap-1">
+                        <div className="flex flex-col">
                             <text className="text-6xl">
                                 {city.location.name}
                             </text>
-                            <text className="text-sm">
+                            {/* <text className="text-sm">
                                 {city.location.country}
-                            </text>
+                            </text> */}
                         </div>
-                        <div className="w-auto col-span-1 flex flex-col items-start">
-                            <text className="text-6xl">
+                        <div className="flex gap-1 justify-center">
+                            <text className="text-5xl">
                                 {city.current.temp_c}°C
                             </text>
-                            <div className="flex gap-1.5">
-                                <img src={`https:${city.current.condition.icon}`} alt={city.current.condition.text} className="w-5.5 h-5.5" />
-                                <text className="text-sm">
-                                    {city.current.condition.text}
-                                </text>
-                            </div>
+                            <img
+                                src={`https:${city.current.condition.icon}`}
+                                alt={city.current.condition.text}
+                                className="w-14 h-14"
+                            />
                         </div>
+                        <text className="text-sm">
+                            {city.current.condition.text}
+                        </text>
                     </div>
                     <div className="flex gap-3 justify-center">
                         <div className="rounded-xl py-1 px-2 bg-red-100/50 text-sm">
