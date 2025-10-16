@@ -18,17 +18,19 @@ Future stuff:
 import { useEffect, useState } from "react"
 import CityCard from "./weather_dashboard/CityCard"
 import type { City } from "./utils/types"
+import ForecastTile from "./weather_dashboard/ForecastTile"
 
 function WeatherDashboard() {
     const [city, setCity] = useState('')
     const key = 'f33b267dfb8e421f902181058251510'
     const [cityResults, setCityResults] = useState<City | null>(null)
     const apiCall = "https://api.weatherapi.com/v1/forecast.json"
+    const days = 4
 
     const clickSearchBtn = async () => {
         if (city.length > 0) {
             const response = await fetch(
-                `${apiCall}?q=${city}&days=3&key=${key}`
+                `${apiCall}?q=${city}&days=${days}&key=${key}`
             )
             response.json()
                 .then((data: City) => {
@@ -48,7 +50,7 @@ function WeatherDashboard() {
         // Use "Manila" as the default city
         async function getDefaultCity() {
             const response = await fetch(
-                `${apiCall}?days=3&q=Manila&key=${key}`
+                `${apiCall}?days=${days}&q=Manila&key=${key}`
             )
             response.json()
                 .then((data: City) => {
@@ -79,6 +81,11 @@ function WeatherDashboard() {
                     <button onClick={clickSearchBtn}>Search</button>
                 </div>
                 <CityCard city={cityResults} />
+                {cityResults && <div className="flex flex-col gap-3">
+                    {cityResults.forecast.forecastday.slice(1,).map((forecast) => {
+                        return <ForecastTile forecast={forecast} />
+                    })}
+                </div>}
             </div>
         </>
     )
