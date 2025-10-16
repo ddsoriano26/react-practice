@@ -9,7 +9,6 @@ Components:
     - Humidity, wind speed, "feels" like temperature
 - Forecast display (3-5 days)
     - Each day shows: date, min/max temperature, weather icon/condition
-Other things to implement:
 Future stuff:
 - Loading spinner thing
 - "Real-time" updating of city as user types, or autocomplete or suggestions
@@ -25,13 +24,16 @@ function WeatherDashboard() {
     const [cityResults, setCityResults] = useState<City | null>(null)
     const apiCall = "https://api.weatherapi.com/v1/forecast.json"
     const days = 4
+    const [loading, setLoading] = useState(true)
 
     const clickSearchBtn = async () => {
+        setLoading(true)
         if (city.length > 0) {
             try {
                 const response = await fetch(
                     `${apiCall}?q=${city}&days=${days}&key=${key}`
                 )
+                setLoading(false)
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status} ${response.statusText}`)
@@ -68,6 +70,7 @@ function WeatherDashboard() {
                 alert("An error occurred with Weather API. Please try refreshing the page.")
                 setCityResults(null)
             }
+            setLoading(false)
         }
         getDefaultCity()
     }, [])
@@ -87,11 +90,16 @@ function WeatherDashboard() {
                     />
                     <button onClick={clickSearchBtn}>Search</button>
                 </div>
-                <CityCard city={cityResults} />
-                {cityResults && <div className="flex flex-col gap-3">
-                    {cityResults.forecast.forecastday.slice(1,).map((forecast) => {
-                        return <ForecastTile forecast={forecast} />
-                    })}
+                {!loading && <div className="w-auto flex flex-col gap-5">
+                    <CityCard city={cityResults} />
+                    {cityResults && <div className="flex flex-col gap-3">
+                        {cityResults.forecast.forecastday.slice(1,).map((forecast) => {
+                            return <ForecastTile forecast={forecast} />
+                        })}
+                    </div>}
+                </div>}
+                {loading && <div>
+                    Loading...
                 </div>}
             </div>
         </>
