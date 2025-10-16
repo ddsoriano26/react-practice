@@ -12,8 +12,8 @@ Components:
     - Background dims when modal is open
 - Error handling
 */
-import React, { lazy, Suspense } from "react"
-import type { City, PhotoResource } from "./utils/types"
+import { lazy, Suspense } from "react"
+import type { PhotoResource } from "./utils/types"
 import { useEffect, useState } from "react"
 import LoadingSpinner from "./utils/LoadingSpinner.tsx"
 
@@ -22,7 +22,7 @@ function ImageGallery() {
     const apiCall = "https://api.pexels.com/v1/search"
     const query = "nature"
     const per_page = 20
-    const page = Math.min(Math.floor(Math.random() * 10), 1)
+    const page = Math.max(Math.floor(Math.random() * 10), 1)
     const accessKey = import.meta.env.VITE_PEXELS_ACCESS_KEY
 
     const LazyPhotoResource = lazy(() => import('./image_gallery/PhotoResource.tsx'))
@@ -44,7 +44,6 @@ function ImageGallery() {
 
                 const data = await response.json()
                 setPhotos(data.photos)
-                // console.log(data)
             } catch (err) {
                 console.error(err)
                 alert("An error occurred fetching the images from Pexels. Please try refreshing the page.")
@@ -55,14 +54,10 @@ function ImageGallery() {
 
     return (
         <>
-            <div className="grid w-full grid-cols-4 gap-3">
+            <div className="grid w-full grid-cols-4 auto-rows-auto gap-3">
                 {photos && (
                     photos.map((photo: PhotoResource) => {
                         return (<Suspense fallback={<LoadingSpinner />}>
-                            {/* <img
-                                src={photo.src.original}
-                                alt={photo.alt}
-                            /> */}
                             <LazyPhotoResource
                                 src={photo.src.original}
                                 alt={photo.alt}
