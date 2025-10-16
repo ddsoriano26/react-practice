@@ -20,7 +20,7 @@ import ForecastTile from "./weather_dashboard/ForecastTile"
 
 function WeatherDashboard() {
     const [city, setCity] = useState('')
-    const key = 'f33b267dfb8e421f902181058251510'
+    const key = import.meta.env.VITE_WEATHER_API_KEY;
     const [cityResults, setCityResults] = useState<City | null>(null)
     const apiCall = "https://api.weatherapi.com/v1/forecast.json"
     const days = 4
@@ -73,7 +73,7 @@ function WeatherDashboard() {
             setLoading(false)
         }
         getDefaultCity()
-    }, [])
+    }, [key])
 
     return (
         <>

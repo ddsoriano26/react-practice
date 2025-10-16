@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 
 function Home() {
   return (
-    <>
+    <div className='flex flex-col gap-10'>
       <div className='flex flex-row'>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
