@@ -25,6 +25,9 @@ function ImageGallery() {
     const page = Math.max(Math.floor(Math.random() * 10), 1)
     const accessKey = import.meta.env.VITE_PEXELS_ACCESS_KEY
 
+    const [open, setOpen] = useState(false)
+    const [displayPhoto, setDisplayPhoto] = useState('')
+
     const LazyPhotoResource = lazy(() => import('./image_gallery/PhotoResource.tsx'))
 
     useEffect(() => {
@@ -59,13 +62,29 @@ function ImageGallery() {
                     photos.map((photo: PhotoResource) => {
                         return (<Suspense fallback={<LoadingSpinner />}>
                             <LazyPhotoResource
-                                src={photo.src.original}
+                                src={photo.src.large}
                                 alt={photo.alt}
+                                setOpen={setOpen}
+                                setDisplayPhoto={setDisplayPhoto}
                             />
                         </Suspense>)
                     })
                 )}
             </div>
+            {open && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
+                    <div className="relative rounded-md shadow-lg max-w-3xl w-full p-4">
+                        <button
+                            onClick={() => setOpen(false)}
+                            className="absolute top-2 right-2 text-gray-600 hover:text-black text-xl"
+                        >
+                            &times;
+                        </button>
+                        <img src={displayPhoto} alt="Preview" className="w-full h-auto rounded-md" />
+                    </div>
+                </div>
+                )}
+
         </>
     )
 }
