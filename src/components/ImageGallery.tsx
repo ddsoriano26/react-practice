@@ -11,11 +11,14 @@ Components:
     - Navigation to next image
     - Background dims when modal is open
 - Error handling
+For future implementation:
+- Actual filtering (using tags)
 */
 import { lazy, Suspense } from "react"
 import type { PhotoResource } from "./utils/types"
 import { useEffect, useState } from "react"
 import LoadingSpinner from "./utils/LoadingSpinner.tsx"
+import Dropdown from "./utils/Dropdown.tsx"
 
 function ImageGallery() {
     const [photos, setPhotos] = useState<Array<PhotoResource> | null>(null)
@@ -24,6 +27,8 @@ function ImageGallery() {
     const per_page = 20
     const page = Math.max(Math.floor(Math.random() * 10), 1)
     const accessKey = import.meta.env.VITE_PEXELS_ACCESS_KEY
+    const options = ["Nature", "Architecture", "People"]
+    const [filterKey, setFilterKey] = useState('')
 
     const [open, setOpen] = useState(false)
     const [displayPhoto, setDisplayPhoto] = useState('')
@@ -53,10 +58,15 @@ function ImageGallery() {
             }
         }
         getPhotos()
-    }, [])
+    }, [filterKey])
 
     return (
         <>
+            <h1>Image Gallery</h1>
+            <div className="flex justify-center gap-2 mt-10 mb-10">
+                <Dropdown options={options} onChooseOption={setFilterKey} />
+                <button>Clear filter</button>
+            </div>
             <div className="grid w-full grid-cols-4 auto-rows-auto gap-3">
                 {photos && (
                     photos.map((photo: PhotoResource) => {
@@ -73,7 +83,7 @@ function ImageGallery() {
             </div>
             {open && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70">
-                    <div className="relative rounded-md shadow-lg max-w-3xl w-full p-4">
+                    <div className="relative rounded-md shadow-lg max-w-3xl w-full max-h-9/10 p-4">
                         <button
                             onClick={() => setOpen(false)}
                             className="absolute top-2 right-2 text-gray-600 hover:text-black text-xl"
