@@ -19,15 +19,17 @@ import type { PhotoResource } from "./utils/types"
 import { useEffect, useState } from "react"
 import LoadingSpinner from "./utils/LoadingSpinner.tsx"
 import Dropdown from "./utils/Dropdown.tsx"
+import { useImages } from "../store/imageGallery.ts"
 
 function ImageGallery() {
-    const [photos, setPhotos] = useState<Array<PhotoResource> | null>(null)
+    const images = useImages((state) => state.images)
+    const addImages = useImages((state) => state.addImages)
     const apiCall = "https://api.pexels.com/v1/search"
-    const query = "nature"
-    const per_page = 20
+    const options = ["Nature", "Architecture", "People"]
+    const per_page = 5
     const page = Math.max(Math.floor(Math.random() * 10), 1)
     const accessKey = import.meta.env.VITE_PEXELS_ACCESS_KEY
-    const options = ["Nature", "Architecture", "People"]
+    
     const [filterKey, setFilterKey] = useState('')
 
     const [open, setOpen] = useState(false)
@@ -36,7 +38,9 @@ function ImageGallery() {
     const LazyPhotoResource = lazy(() => import('./image_gallery/PhotoResource.tsx'))
 
     useEffect(() => {
-        async function getPhotos() {
+        const options = ["Nature", "Architecture", "People"]
+
+        async function getPhotos(query: string) {
             try {
                 const response = await fetch(
                     `${apiCall}?query=${query}&per_page=${per_page}&page=${page}`, {
@@ -51,14 +55,18 @@ function ImageGallery() {
                 }
 
                 const data = await response.json()
-                setPhotos(data.photos)
+                addImages(data.photos)
+                
             } catch (err) {
                 console.error(err)
                 alert("An error occurred fetching the images from Pexels. Please try refreshing the page.")
             }
         }
-        getPhotos()
-    }, [filterKey])
+
+        options.forEach(async (option: string) => {
+            getPhotos(option)
+        })
+    }, [])
 
     return (
         <>
@@ -68,9 +76,9 @@ function ImageGallery() {
                 <button>Clear filter</button>
             </div>
             <div className="grid w-full grid-cols-4 auto-rows-auto gap-3">
-                {photos && (
-                    photos.map((photo: PhotoResource) => {
-                        return (<Suspense fallback={<LoadingSpinner />}>
+                {images && (
+                    images.map((photo: PhotoResource) => {
+                        return (<Suspense fallback={<LoadingSpinner key={photo.src.original} />}>
                             <LazyPhotoResource
                                 src={photo.src.large}
                                 alt={photo.alt}
