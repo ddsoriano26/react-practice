@@ -2,9 +2,10 @@
 
 Hello and welcome to this portfolio in progress! This is where I'll be honing and practicing my React skills, and also try to learn new technologies. This list includes:
 
-- [x] Vite
-- [x] Tailwind CSS
-- [ ] shadcn/ui
+- [x] [Vite](https://vite.dev)
+- [x] [Tailwind CSS](https://tailwindcss.com)
+- [ ] [shadcn/ui](https://ui.shadcn.com)
+- [x] [Zustand](https://zustand.docs.pmnd.rs/getting-started/introduction)
 
 ## About This Template
 
