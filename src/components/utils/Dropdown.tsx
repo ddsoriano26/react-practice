@@ -8,6 +8,10 @@ export default function Dropdown({ options, onChooseOption, menuName = "Options"
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
+  const onClickChoice = (option: string) => {
+    onChooseOption(option)
+  }
+
   // Close dropdown if user clicks outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -41,8 +45,7 @@ export default function Dropdown({ options, onChooseOption, menuName = "Options"
           <div>
             {options.map((option: string) => { return (
                 <button
-                    onClick={() => onChooseOption(option)}
-                    // className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-white-700"
+                    onClick={() => onClickChoice(option)}
                     className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:text-white"
                     key={option}
                 >

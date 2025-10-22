@@ -10,4 +10,35 @@ export function formatDate(dateString: string): string {
   
     return date.toLocaleDateString('en-US', options);
   }
+
+// Basic throttle function
+export function throttle<T extends (...args: unknown[]) => void>(
+    func: T,
+    limit: number
+  ): (...args: Parameters<T>) => void {
+    let inThrottle = false;
+  
+    return function (this: unknown, ...args: Parameters<T>) {
+      if (!inThrottle) {
+        func.apply(this, args);
+        inThrottle = true;
+        setTimeout(() => (inThrottle = false), limit);
+      }
+    };
+  }
+
+// Basic debounce function
+export function debounce<T extends (...args: unknown[]) => void>(
+    func: T,
+    delay: number
+  ): (...args: Parameters<T>) => void {
+    let timer: ReturnType<typeof setTimeout> | null = null;
+  
+    return function (this: unknown, ...args: Parameters<T>) {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => {
+        func.apply(this, args);
+      }, delay);
+    };
+  }
   
