@@ -68,6 +68,35 @@ function ImageGallery() {
         })
     }, [])
 
+    useEffect(() => {
+        async function getPhotos(query: string) {
+            try {
+                const response = await fetch(
+                    `${apiCall}?query=${query}&per_page=${per_page}&page=${page}`, {
+                        headers: {
+                            'Authorization': `${accessKey}`
+                        }
+                    }
+                )
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status} ${response.statusText}`)
+                }
+
+                const data = await response.json()
+                addImages(data.photos)
+                
+            } catch (err) {
+                console.error(err)
+                alert("An error occurred fetching the images from Pexels. Please try refreshing the page.")
+            }
+        }
+
+        if (filterKey.length > 0 && options.includes(filterKey)) {
+            getPhotos(filterKey)
+        }
+    }, [filterKey])
+
     return (
         <>
             <h1>Image Gallery</h1>
@@ -84,6 +113,7 @@ function ImageGallery() {
                                 alt={photo.alt}
                                 setOpen={setOpen}
                                 setDisplayPhoto={setDisplayPhoto}
+                                key={photo.src.original}
                             />
                         </Suspense>)
                     })
