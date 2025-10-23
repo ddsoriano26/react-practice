@@ -19,6 +19,7 @@ function Home() {
         <Link to='/todo-list'><button className='link'>To-Do List</button></Link>
         <Link to='/weather-dashboard'><button className='link'>Weather Dashboard</button></Link>
         <Link to='/image-gallery'><button className='link'>Image Gallery</button></Link>
+        <Link to='/task-dashboard'><button className='link'>Task Dashboard</button></Link>
       </div>
       <p className="read-the-docs">
         Portfolio to showcase React and web development skills and learnings
